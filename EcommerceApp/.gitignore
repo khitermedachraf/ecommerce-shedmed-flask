@@ -1,6 +1,7 @@
 /.idea/
 /.vscode/
 /venv/
+venv/
 
 .coverage
 __pycache__
