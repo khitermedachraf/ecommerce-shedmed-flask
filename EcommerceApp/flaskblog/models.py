@@ -30,15 +30,18 @@ class Product(db.Model):
     image_product = db.Column(db.String(20), nullable=False, default='defaultProduct.jpg')
     type = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=True)  # we should give a price when we choose a product for sale
-    exchangeList = db.Column(db.String, nullable=True)  # we should give a list of exchange when we choose a product for exchange.
+    exchangeList = db.Column(db.String,
+                             nullable=True)  # we should give a list of exchange when we choose a product for exchange.
 
     def __repr__(self):
         return f"Product('{self.title}', '{self.date_posted}', '{self.image_product}', '{self.type}, '{self.price}', '{self.exchangeList}')"
+
 
 class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String, nullable=False)
     products = db.relationship('Product', backref='store', lazy=True)
+
     def __repr__(self):
-        return f"Product('{self.name}', '{self.location}'"
+        return f"Store('{self.name}', '{self.location}'"
