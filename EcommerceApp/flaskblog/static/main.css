@@ -83,3 +83,7 @@ a.article-title:hover {
 padding-left:25px;
 }
 
+/* change the color of logo tile to yellow */
+.yellowLogo{
+color:#ffc107;
+}

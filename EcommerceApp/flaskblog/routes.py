@@ -70,6 +70,7 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
+    flash('You logged out successfully', 'info')
     return redirect(url_for('home'))
 
 
