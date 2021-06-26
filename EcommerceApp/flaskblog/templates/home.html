@@ -1,14 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for post in posts %}
+    {% for product in products %}
         <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.owner.image_profile) }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted }}</small>
+              <a class="mr-2" href="#">{{ product.owner.username }}</a>
+              <small class="text-muted">{{ product.date_posted.strftime('%Y-%m-%d') }}</small>
             </div>
-            <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+            <h2><a class="article-title" href="{{ url_for('product', product_id=product.id) }}">{{ product.title }}</a></h2>
+            <p class="article-content">{{ product.content }}</p>
           </div>
         </article>
     {% endfor %}

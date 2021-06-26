@@ -1,33 +1,18 @@
 import os
 import secrets
 from PIL import Image
-from flask import render_template, url_for, flash, redirect, request
+from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, ProductForm
 from flaskblog.models import User, Product, Store
 from flask_login import login_user, current_user, logout_user, login_required
-
-
-posts = [
-    {
-        'author': 'Corey Schafer',
-        'title': 'Blog Post 1',
-        'content': 'First post content',
-        'date_posted': 'April 20, 2018'
-    },
-    {
-        'author': 'Jane Doe',
-        'title': 'Blog Post 2',
-        'content': 'Second post content',
-        'date_posted': 'April 21, 2018'
-    }
-]
 
 
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template('home.html', posts=posts)
+    products = Product.query.all()
+    return render_template('home.html', products=products)
 
 
 @app.route("/about")
@@ -107,3 +92,64 @@ def account():
     image_file = url_for('static', filename='profile_pics/' + current_user.image_profile)
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
+
+
+@app.route("/product/new", methods=['GET', 'POST'])
+@login_required
+def new_product():
+    form = ProductForm()
+    if form.validate_on_submit():
+        store = Store.query.filter_by(name=form.store.data).first()
+        product = Product(title=form.title.data, content=form.content.data, owner=current_user, store=store,
+                          type=form.type.data, price=form.price.data, exchangeList=form.exchangeList.data)
+        db.session.add(product)
+        db.session.commit()
+        flash('Your product announcement has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_product.html', title='New Product',
+                           form=form, legend='New Product')
+
+
+@app.route("/product/<int:product_id>")
+def product(product_id):
+    product = Product.query.get_or_404(product_id)
+    return render_template('product.html', title=product.title, product=product)
+
+
+@app.route("/product/<int:product_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    if product.owner != current_user:
+        abort(403)
+    form = ProductForm()
+    if form.validate_on_submit():
+        product.title = form.title.data
+        product.content = form.content.data
+        product.store = Store.query.filter_by(name=form.store.data).first()
+        product.type = form.type.data
+        product.price = form.price.data
+        product.exchangeList = form.exchangeList.data
+        db.session.commit()
+        flash('Your product announcement has been updated!', 'success')
+        return redirect(url_for('product', product_id=product.id))
+    elif request.method == 'GET':
+        form.title.data = product.title
+        form.content.data = product.content
+        form.type.data = product.type
+        form.store.data = product.store.name
+        form.price.data = product.price
+        form.exchangeList.data = product.exchangeList
+    return render_template('create_product.html', title='Update Product', form=form, legend='Update Product')
+
+
+@app.route("/product/<int:product_id>/delete", methods=['POST'])
+@login_required
+def delete_product(product_id):
+    product = Product.query.get_or_404(product_id)
+    if product.owner != current_user:
+        abort(403)
+    db.session.delete(product)
+    db.session.commit()
+    flash('Your product has been deleted!', 'success')
+    return redirect(url_for('home'))

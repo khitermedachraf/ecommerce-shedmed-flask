@@ -26,7 +26,7 @@ class Product(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    store_id = db.Column(db.Integer, db.ForeignKey('store.id'), nullable=False)
+    store_id = db.Column(db.Integer, db.ForeignKey('store.id'), nullable=True)
     image_product = db.Column(db.String(20), nullable=False, default='defaultProduct.jpg')
     type = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=True)  # we should give a price when we choose a product for sale
