@@ -13,20 +13,66 @@
           </div>
         {% endif %}
       </div>
-      <h2 class="article-title">{{ product.title }}</h2>
-      <h6 class="article-title"> <b>Store:</b> {{ product.store.name }}.</h6>
-      {% if product.type == "for sale" %}
-        <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-warning btn-lg p-1 pl-4 pr-4" disabled> {{ product.type }} </button></h6>
-        <h6 class="article-title"> <b>Price:</b> {{ product.price }} DA.</h6>
-      {% elif product.type == "for free" %}
-        <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-success btn-lg p-1 pl-4 pr-4" disabled>{{ product.type }}</button></h6>
-        <h6 class="article-title"> <b>Price:</b> 00.00 DA.</h6>
-      {%  elif product.type == "for exchange" %}
-        <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-primary btn-lg p-1 pl-4 pr-4" disabled>{{ product.type }}</button></h6>
-        <h6 class="article-title"> <b>I want to exchange with:</b> {{ product.exchangeList }}.</h6>
-      {% else %}
-        <h6 class="article-title"> <b> No type is chosen</b>.</h6>
-      {% endif %}
+      <div class="media">
+        <div class="media-body">
+          <h2 class="article-title">{{ product.title }}</h2>
+          <h6 class="article-title"> <b>Store:</b> {{ product.store.name }}.</h6>
+          {% if product.type == "for sale" %}
+            <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-warning btn-lg p-1 pl-4 pr-4" disabled> {{ product.type }} </button></h6>
+            <h6 class="article-title"> <b>Price:</b> {{ product.price }} DA.</h6>
+          {% elif product.type == "for free" %}
+            <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-success btn-lg p-1 pl-4 pr-4" disabled>{{ product.type }}</button></h6>
+            <h6 class="article-title"> <b>Price:</b> 00.00 DA.</h6>
+          {%  elif product.type == "for exchange" %}
+            <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-primary btn-lg p-1 pl-4 pr-4" disabled>{{ product.type }}</button></h6>
+            <h6 class="article-title"> <b>I want to exchange with:</b> {{ product.exchangeList }}.</h6>
+          {% else %}
+            <h6 class="article-title"> <b> No type is chosen</b>.</h6>
+          {% endif %}
+        </div>
+        <img class="img-thumbnail product_img" src="{{ image_file }}" data-toggle="modal" data-target="#exampleModal" >
+        <div class="modal fade"
+             id="exampleModal"
+             tabindex="-1"
+             role="dialog"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog"
+                 role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <!-- w-100 class so that header
+                div covers 100% width of parent div -->
+                        <h5 class="modal-title w-100"
+                            id="exampleModalLabel">
+                          GeeksForGeeks
+                      </h5>
+                        <button type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close">
+                            <span aria-hidden="true">
+                              ×
+                          </span>
+                        </button>
+                    </div>
+
+                    <!--Modal body with image-->
+                    <div class="modal-body">
+                        <img src="{{ image_file }}" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-danger"
+                                data-dismiss="modal">
+                          Close
+                      </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
       <p class="article-content"> <b>Description:</b> {{ product.content }}</p>
     </div>
   </article>

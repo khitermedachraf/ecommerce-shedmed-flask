@@ -74,7 +74,10 @@ a.article-title:hover {
   margin-right: 20px;
   margin-bottom: 16px;
 }
-
+.product_img{
+  height: 200px;
+  width: 250px;
+}
 .account-heading {
   font-size: 2.5rem;
 }
@@ -86,4 +89,8 @@ padding-left:25px;
 /* change the color of logo tile to yellow */
 .yellowLogo{
 color:#ffc107;
+}
+/* Content of modal div is center aligned */
+.modal {
+    text-align: center;
 }
