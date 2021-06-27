@@ -94,14 +94,31 @@ def account():
                            image_file=image_file, form=form)
 
 
+def save_product_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/product_pics', picture_fn)
+
+    output_size = (250, 250)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
+
 @app.route("/product/new", methods=['GET', 'POST'])
 @login_required
 def new_product():
     form = ProductForm()
     if form.validate_on_submit():
         store = Store.query.filter_by(name=form.store.data).first()
-        product = Product(title=form.title.data, content=form.content.data, owner=current_user, store=store,
-                          type=form.type.data, price=form.price.data, exchangeList=form.exchangeList.data)
+        if form.picture.data:
+            picture_file = save_product_picture(form.picture.data)
+            product = Product(title=form.title.data, content=form.content.data, owner=current_user, store=store, type=form.type.data, price=form.price.data, exchangeList=form.exchangeList.data, image_product=picture_file)
+        else:
+            product = Product(title=form.title.data, content=form.content.data, owner=current_user, store=store, type=form.type.data, price=form.price.data, exchangeList=form.exchangeList.data)
         db.session.add(product)
         db.session.commit()
         flash('Your product announcement has been created!', 'success')
@@ -125,6 +142,9 @@ def update_product(product_id):
         abort(403)
     form = ProductForm()
     if form.validate_on_submit():
+        if form.picture.data:
+            picture_file = save_product_picture(form.picture.data)
+            product.image_product = picture_file
         product.title = form.title.data
         product.content = form.content.data
         product.store = Store.query.filter_by(name=form.store.data).first()
@@ -141,6 +161,7 @@ def update_product(product_id):
         form.store.data = product.store.name
         form.price.data = product.price
         form.exchangeList.data = product.exchangeList
+        form.picture.data = product.image_product
     return render_template('create_product.html', title='Update Product', form=form, legend='Update Product')
 
 

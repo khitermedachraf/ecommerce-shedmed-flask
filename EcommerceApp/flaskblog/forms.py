@@ -63,5 +63,5 @@ class ProductForm(FlaskForm):
     type = SelectField('Type of product', choices=[('for free', 'For FREE'), ('for sale', 'For Sale'), ('for exchange', 'For Exchange')], validators=[DataRequired()])
     price = StringField('Price: {Only if the type is {For Sale}}')
     exchangeList = StringField('I want to exchange with: {Only if the type is {For Exchange}}')
-
+    picture = FileField('Add Product Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Publish announcement')
