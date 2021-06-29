@@ -1,4 +1,98 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1>
+    <style>
+        .column {
+            float: left;
+            width: 70%;
+            margin-bottom: 16px;
+            padding: 0 8px;
+        }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            margin: 8px;
+        }
+        .title {
+            color: grey;
+        }
+        .button {
+            border: none;
+            outline: 0;
+            display: inline-block;
+            padding: 8px;
+            text-align: center;
+            width: 100%;
+        }
+        @media screen and (max-width: 650px) {
+            .column {
+                width: 100%;
+                display: block;
+            }
+        }
+    </style>
+    <div>
+        <h1 style="text-align:center" >About Us Page</h1>
+        <div class="card">
+          <div class="card-body">
+                <h3><b>Project title:</b></h3>
+                <h4 style="text-align:center">  Design and creation of an online platform for trade and charitable volunteers in Algeria...</h4>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h3><b>Summary of the bachelor project topic:</b></h3>
+            <h4> style="text-align:center" > The design and production of a web application that allows the management of trade between users, purchases / sales and donations,
+                The application is based on these three essential points:</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">first idea</li>
+                    <li class="list-group-item"> second one</li>
+                    <li class="list-group-item">the third</li>
+                </ul>
+          </div>
+        </div>
+    </div>
+
+    <h1 style="text-align:center">Our Team</h1>
+    <div class="row d-flex justify-content-center">
+        <div class="column">
+            <div class="card">
+                <img src="../static/img/achraf.jpg" alt="Jane" style="width:100%">
+                <div class="container">
+                    <h2>KHITER Mohamed Achraf</h2>
+                    <p class="title">CEO & Founder</p>
+                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                    <p>Student * Junior Full Stack Devloper* hard worker* self-taught* honest, I will be the best software enginner </p>
+                    <p>khiter.med7@gmail.com</p>
+                    <p><button class="button btn btn-warning ">Contact</button></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <img src="../static/img/manel.jpg" alt="Mike" style="width:100%">
+                <div class="container">
+                    <h2>BENBARA Manel</h2>
+                    <p class="title">Art Director</p>
+                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum </p>
+                    <p>manel.hamilton44@gmail.com</p>
+                    <p><button class="button btn btn-warning ">Contact</button></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card">
+                <img src="../static/img/google.svg" alt="John" style="width:100%">
+                <div class="container">
+                    <h2> Mister GOOGLE</h2>
+                    <p class="title">Moteur de recherche</p>
+                    <p>Some text that describes me lorem ipsum ipsum lorem.</p>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</p>
+                    <p>google@gmail.com</p>
+                    <p><button class="button btn btn-warning">Contact</button></p>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

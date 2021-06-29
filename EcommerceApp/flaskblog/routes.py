@@ -15,6 +15,13 @@ def home():
     return render_template('home.html', products=products)
 
 
+@app.route("/my_products")
+@login_required
+def my_products():
+    products = Product.query.filter_by(user_id=current_user.id).all()
+    return render_template('home.html', products=products)
+
+
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
