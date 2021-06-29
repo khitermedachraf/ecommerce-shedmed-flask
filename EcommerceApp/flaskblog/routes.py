@@ -13,7 +13,7 @@ from sqlalchemy import desc
 @app.route("/")
 @app.route("/home")
 def home():
-    products = Product.query.order_by(desc(Product.date_posted)).limit(3).all()
+    products = Product.query.order_by(desc(Product.date_posted)).limit(25).all()
     return render_template('home.html', products=products)
 
 
@@ -22,6 +22,13 @@ def home():
 def my_products():
     products = Product.query.filter_by(user_id=current_user.id).all()
     return render_template('home.html', products=products)
+
+
+@app.route("/stores")
+
+def stores():
+    stores = Store.query.all()
+    return render_template('stores.html', stores=stores)
 
 
 @app.route("/about")
