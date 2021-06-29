@@ -6,12 +6,14 @@ from flaskblog import app, db, bcrypt
 from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, ProductForm
 from flaskblog.models import User, Product, Store
 from flask_login import login_user, current_user, logout_user, login_required
+from sqlalchemy import desc
+
 
 
 @app.route("/")
 @app.route("/home")
 def home():
-    products = Product.query.all()
+    products = Product.query.order_by(desc(Product.date_posted)).limit(3).all()
     return render_template('home.html', products=products)
 
 
