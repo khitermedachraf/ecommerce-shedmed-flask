@@ -1,14 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-    {%set counter = 1 %}
     {% for store in stores %}
-        <h1>{{counter}}-Store Name: <b>{{store.name}}</b></h1>
-        <h2> &emsp;Store Location: <b>{{store.location}}</b></h2>
+        <div class="card">
+          <div class="card-body" style="background-color:#ffc107;">
+            <h1>#Store Name: <b>{{store.name}}</b></h1>
+            <h2> &emsp;Store Location: <b>{{store.location}}</b></h2>
+          </div>
+        </div>
+        <br>
         <div class="card">
           <div class="card-body">
               <h1>Store products: </h1>
               <br>
               {% set products=store.products %}
+              {% if not products:%}
+                <div class="card">
+                  <div class="card-body">
+                     <h3 class="d-flex p-2">The store does not contain any Products,Yet!</h3>
+                  </div>
+                </div>
+             {% endif %}
               {% for product in products %}
                 <article class="media content-section">
                   <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.owner.image_profile) }}">
@@ -45,7 +56,6 @@
         <br>
         <hr>
         <br>
-        {%set counter = counter+1 %}
     {% endfor %}
 
 {% endblock content %}

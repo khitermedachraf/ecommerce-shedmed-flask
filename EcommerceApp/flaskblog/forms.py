@@ -65,3 +65,9 @@ class ProductForm(FlaskForm):
     exchangeList = StringField('I want to exchange with: {Only if the type is {For Exchange}}')
     picture = FileField('Add Product Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Publish announcement')
+
+
+class StoreForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    location = TextAreaField('Location', validators=[DataRequired()])
+    submit = SubmitField('Create store')

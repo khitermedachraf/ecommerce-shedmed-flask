@@ -3,11 +3,10 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskblog import app, db, bcrypt
-from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, ProductForm
+from flaskblog.forms import RegistrationForm, LoginForm, UpdateAccountForm, ProductForm, StoreForm
 from flaskblog.models import User, Product, Store
 from flask_login import login_user, current_user, logout_user, login_required
 from sqlalchemy import desc
-
 
 
 @app.route("/")
@@ -25,7 +24,6 @@ def my_products():
 
 
 @app.route("/stores")
-
 def stores():
     stores = Store.query.all()
     return render_template('stores.html', stores=stores)
@@ -191,3 +189,17 @@ def delete_product(product_id):
     db.session.commit()
     flash('Your product has been deleted!', 'success')
     return redirect(url_for('home'))
+
+
+@app.route("/store/new", methods=['GET', 'POST'])
+@login_required
+def new_store():
+    form = StoreForm()
+    if form.validate_on_submit():
+        store = Store(name=form.name.data, location=form.location.data)
+        db.session.add(store)
+        db.session.commit()
+        flash('Your store  has been created!', 'success')
+        return redirect(url_for('stores'))
+    return render_template('create_store.html', title='New Store',
+                           form=form, legend='New Store')
