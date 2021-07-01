@@ -13,17 +13,18 @@ from sqlalchemy import desc
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    products = Product.query.order_by(Product.date_posted.desc()).paginate(page=page, per_page=5)
+    products = Product.query.order_by(Product.date_posted.desc()).paginate(page=page, per_page=4)
     return render_template('home.html', products=products)
 
 
 @app.route("/my_products")
 @login_required
 def my_products():
+    user = current_user
     page = request.args.get('page', 1, type=int)
     products = Product.query.filter_by(user_id=current_user.id) \
-               .order_by(Product.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', products=products)
+               .order_by(Product.date_posted.desc()).paginate(page=page, per_page=3)
+    return render_template('user_products.html', products=products, user=user)
 
 
 @app.route("/stores")
@@ -62,7 +63,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            flash('You logged In successfully, You are now able to your update Data... ', 'success')
+            flash('You logged In successfully, You are now able to update your  Data... ', 'success')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
@@ -214,5 +215,5 @@ def user_products(username):
     user = User.query.filter_by(username=username).first_or_404()
     products = Product.query.filter_by(owner=user)\
         .order_by(Product.date_posted.desc())\
-        .paginate(page=page, per_page=5)
+        .paginate(page=page, per_page=3)
     return render_template('user_products.html', products=products, user=user)
