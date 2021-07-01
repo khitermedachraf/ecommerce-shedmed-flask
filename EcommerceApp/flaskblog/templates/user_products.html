@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="card">
+      <div class="card-body" style="background-color:#ffc107;">
+        <h2 class="mb-3">Published by: {{ user.username }} ({{ products.total }}) Products</h2>
+      </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    {% for product in products.items %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.owner.image_profile) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('user_products', username=product.owner.username) }}">{{ product.owner.username }}</a>
+              <small class="text-muted">{{ product.date_posted.strftime('%Y-%m-%d') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('product', product_id=product.id) }}">{{ product.title }}</a></h2>
+            <p class="article-content">{{ product.content }}</p>
+          </div>
+        </article>
+    {% endfor %}
+    {% for page_num in products.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if products.page == page_num %}
+          <a class="btn btn-warning mb-4" href="{{ url_for('user_products', username=user.username, page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-warning mb-4" href="{{ url_for('user_products', username=user.username, page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+{% endblock content %}

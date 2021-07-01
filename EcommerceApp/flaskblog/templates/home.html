@@ -7,12 +7,12 @@
           </div>
         </div>
     {% endif %}
-    {% for product in products %}
+    {% for product in products.items %}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.owner.image_profile) }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ product.owner.username }}</a>
+              <a class="mr-2" href="{{ url_for('user_products', username=product.owner.username) }}"> {{ product.owner.username }} </a>
               <small class="text-muted">{{ product.date_posted.strftime('%Y-%m-%d') }}</small>
             </div>
               <div class="media">
@@ -37,5 +37,16 @@
               <p class="article-content">{{ product.content }}</p>
           </div>
         </article>
+    {% endfor %}
+    {% for page_num in products.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if products.page == page_num %}
+          <a class="btn btn-warning mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-warning mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
     {% endfor %}
 {% endblock content %}

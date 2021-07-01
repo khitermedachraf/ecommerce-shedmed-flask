@@ -3,56 +3,21 @@
     {% for store in stores %}
         <div class="card">
           <div class="card-body" style="background-color:#ffc107;">
+            {% set products=store.products %}
             <h1>#Store Name: <b>{{store.name}}</b></h1>
-            <h2> &emsp;Store Location: <b>{{store.location}}</b></h2>
+            <h2>&emsp;Store Location: <b>{{store.location}}</b></h2>
+            <h1>&emsp;Number of products: {{products|length}} </h1>
           </div>
         </div>
-        <br>
-        <div class="card">
-          <div class="card-body">
-              <h1>Store products: </h1>
-              <br>
-              {% set products=store.products %}
-              {% if not products:%}
-                <div class="card">
-                  <div class="card-body">
-                     <h3 class="d-flex p-2">The store does not contain any Products,Yet!</h3>
-                  </div>
-                </div>
-             {% endif %}
-              {% for product in products %}
-                <article class="media content-section">
-                  <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.owner.image_profile) }}">
-                  <div class="media-body">
-                    <div class="article-metadata">
-                      <a class="mr-2" href="#">{{ product.owner.username }}</a>
-                      <small class="text-muted">{{ product.date_posted.strftime('%Y-%m-%d') }}</small>
-                    </div>
-                      <div class="media">
-                        <div class="media-body">
-                          <h2><a class="article-title" href="{{ url_for('product', product_id=product.id) }}">{{ product.title }}</a></h2>
-                          {% if product.type == "for sale" %}
-                            <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-warning btn-lg p-1 pl-4 pr-4" disabled> {{ product.type }} </button></h6>
-                            <h6 class="article-title"> <b>Price:</b> {{ product.price }} DA.</h6>
-                          {% elif product.type == "for free" %}
-                            <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-success btn-lg p-1 pl-4 pr-4" disabled>{{ product.type }}</button></h6>
-                            <h6 class="article-title"> <b>Price:</b> 00.00 DA.</h6>
-                          {%  elif product.type == "for exchange" %}
-                            <h6 class="article-title"> <b>Type: </b> <button type="button" class="btn btn-primary btn-lg p-1 pl-4 pr-4" disabled>{{ product.type }}</button></h6>
-                            <h6 class="article-title"> <b>I want to exchange with:</b> {{ product.exchangeList }}.</h6>
-                          {% else %}
-                            <h6 class="article-title"> <b> No type is chosen</b>.</h6>
-                          {% endif %}
-                        </div>
-                        {% set image_product = url_for('static', filename='product_pics/' + product.image_product) %}
-                        <img class="rounded-circle product-home-img img-thumbnail" src="{{ image_product }}">
-                      </div>
-                      <p class="article-content">{{ product.content }}</p>
-                  </div>
-                </article>
-            {% endfor %}
-          </div>
-        </div>
+          {% if not products:%}
+            <br>
+            <div class="card">
+              <div class="card-body">
+                 <h3 class="d-flex p-2">The store does not contain any Products,Yet!</h3>
+              </div>
+            </div>
+            <br>
+         {% endif %}
         <br>
         <hr>
         <br>

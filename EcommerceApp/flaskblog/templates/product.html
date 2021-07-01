@@ -4,7 +4,7 @@
     <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + product.owner.image_profile) }}">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ product.owner.username }}</a>
+        <a class="mr-2" href="{{ url_for('user_products', username=product.owner.username) }}">{{  product.owner.username }} </a>
         <small class="text-muted">{{ product.date_posted.strftime('%Y-%m-%d') }}</small>
         {% if product.owner == current_user %}
           <div>

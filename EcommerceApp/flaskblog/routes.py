@@ -12,14 +12,17 @@ from sqlalchemy import desc
 @app.route("/")
 @app.route("/home")
 def home():
-    products = Product.query.order_by(desc(Product.date_posted)).limit(25).all()
+    page = request.args.get('page', 1, type=int)
+    products = Product.query.order_by(Product.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', products=products)
 
 
 @app.route("/my_products")
 @login_required
 def my_products():
-    products = Product.query.filter_by(user_id=current_user.id).all()
+    page = request.args.get('page', 1, type=int)
+    products = Product.query.filter_by(user_id=current_user.id) \
+               .order_by(Product.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', products=products)
 
 
@@ -203,3 +206,13 @@ def new_store():
         return redirect(url_for('stores'))
     return render_template('create_store.html', title='New Store',
                            form=form, legend='New Store')
+
+
+@app.route("/user/<string:username>")
+def user_products(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    products = Product.query.filter_by(owner=user)\
+        .order_by(Product.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('user_products.html', products=products, user=user)
